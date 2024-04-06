@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += xz
-XZ_VERSION    := 5.4.1
+XZ_VERSION    := 5.4.6
 
 xz-setup: binpack-setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{$(comma).sig})
-	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://fossies.org/linux/misc/xz-5.4.6.tar.xz)
+	#$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)

@@ -9,7 +9,7 @@ dropbear-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/mkj/dropbear/archive/DROPBEAR_$(DROPBEAR_VERSION).tar.gz)
 	$(call EXTRACT_TAR,DROPBEAR_$(DROPBEAR_VERSION).tar.gz,dropbear-DROPBEAR_$(DROPBEAR_VERSION),dropbear)
 	$(call DO_PATCH,dropbear,dropbear,-p1)
-	[ ! -e $(BUILD_WORK)/dropbear/dropbear-overrides.patch.done ] && patch -p1 -d $(BUILD_WORK)/dropbear < $(BUILD_ROOT)/patches/dropbear-overrides.patch && touch $(BUILD_WORK)/dropbear/dropbear-overrides.patch.done
+	[ ! -e $(BUILD_WORK)/dropbear/dropbear-overrides.patch.done ] && patch -p1 -d $(BUILD_WORK)/dropbear < $(BUILD_ROOT)/patches/dropbear-overrides.patch && touch $(BUILD_WORK)/dropbear/dropbear-overrides.patch.done || true
 
 ifneq ($(wildcard $(BUILD_WORK)/dropbear/.build_complete),)
 dropbear:

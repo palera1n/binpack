@@ -10,7 +10,7 @@ FILE-CMDS_VERSION := 400
 file-cmds-setup: setup binpack-setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,file_cmds,$(FILE-CMDS_VERSION),file_cmds-$(FILE-CMDS_VERSION))
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-file_cmds-$(FILE-CMDS_VERSION),file-cmds)
-	[ ! -e $(BUILD_WORK)/file-cmds/file_cmds-mv.diff.done ] && patch -p1 -d $(BUILD_WORK)/file-cmds < $(BUILD_ROOT)/patches/file_cmds-mv.diff && touch $(BUILD_WORK)/file-cmds/file_cmds-mv.diff.done
+	[ ! -e $(BUILD_WORK)/file-cmds/file_cmds-mv.diff.done ] && patch -p1 -d $(BUILD_WORK)/file-cmds < $(BUILD_ROOT)/patches/file_cmds-mv.diff && touch $(BUILD_WORK)/file-cmds/file_cmds-mv.diff.done || true
 	sed -i '/libutil.h/ s/$$/\nint expand_number(const char *buf, uint64_t *num);/' $(BUILD_WORK)/file-cmds/du/du.c
 	sed -i 's/strcmp(progname, "gunzip") == 0/& || strcmp(progname, "xzdec") == 0 || strcmp(progname, "bunzip2") == 0/' $(BUILD_WORK)/file-cmds/gzip/gzip.c
 	rm -f $(BUILD_WORK)/file-cmds/dd/gen.c
