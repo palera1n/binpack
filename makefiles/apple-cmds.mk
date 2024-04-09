@@ -13,7 +13,7 @@ ifneq ($(wildcard $(BUILD_WORK)/apple-cmds/.build_complete),)
 apple-cmds:
 	@echo "Using previously built apple-cmds."
 else
-apple-cmds: apple-cmds-setup adv-cmds file-cmds kext-tools libarchive network-cmds shell-cmds system-cmds text-cmds
+apple-cmds: apple-cmds-setup adv-cmds file-cmds kext-tools libarchive network-cmds shell-cmds system-cmds text-cmds remote-cmds
 	cp -a $(BUILD_STAGE)/adv-cmds/* $(BUILD_STAGE)/apple-cmds/
 	cp -a $(BUILD_STAGE)/file-cmds/* $(BUILD_STAGE)/apple-cmds/
 	cp -a $(BUILD_STAGE)/kext-tools/* $(BUILD_STAGE)/apple-cmds/
@@ -22,6 +22,7 @@ apple-cmds: apple-cmds-setup adv-cmds file-cmds kext-tools libarchive network-cm
 	cp -a $(BUILD_STAGE)/shell-cmds/* $(BUILD_STAGE)/apple-cmds/
 	cp -a $(BUILD_STAGE)/system-cmds/* $(BUILD_STAGE)/apple-cmds/
 	cp -a $(BUILD_STAGE)/text-cmds/* $(BUILD_STAGE)/apple-cmds/
+	cp -a $(BUILD_STAGE)/remote-cmds/* $(BUILD_STAGE)/apple-cmds/
 	objs=""; \
 	for f in $$(find $(BUILD_STAGE)/apple-cmds/ -type f -name '*.lo' -print); do \
 		n=$$(basename $$f .lo); \

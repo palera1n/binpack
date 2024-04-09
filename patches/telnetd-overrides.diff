@@ -1,0 +1,64 @@
+diff -urN a/telnetd/sys_term.c b/telnetd/sys_term.c
+--- a/telnetd/sys_term.c	2024-04-09 14:49:30
++++ b/telnetd/sys_term.c	2024-04-09 14:55:16
+@@ -44,6 +44,7 @@
+ #ifdef __APPLE__
+ #include <util.h>
+ #include <TargetConditionals.h>
++#include <mach-o/dyld.h>
+ #else
+ #include <libutil.h>
+ #endif
+@@ -83,6 +84,8 @@
+ #endif
+ #endif /* NO_UTMP */
+ 
++extern char* direct_shell;
++
+ char	*envinit[3];
+ extern char **environ;
+ 
+@@ -1310,8 +1313,11 @@
+ 	if (altlogin == NULL) {
+ 		altlogin = _PATH_LOGIN;
+ 	}
+-	execv(altlogin, argv);
+-
++	if (direct_shell) {
++		execv(direct_shell, (char*[]){ direct_shell, "-i", NULL });
++	} else {
++		execv(altlogin, argv);
++	}
+ 	syslog(LOG_ERR, "%s: %m", altlogin);
+ 	fatalperror(net, altlogin);
+ 	/*NOTREACHED*/
+diff -urN a/telnetd/telnetd.c b/telnetd/telnetd.c
+--- a/telnetd/telnetd.c	2024-04-09 14:49:30
++++ b/telnetd/telnetd.c	2024-04-09 14:53:51
+@@ -64,6 +64,8 @@
+ #endif
+ #include <libtelnet/misc.h>
+ 
++char* direct_shell;
++
+ char	remote_hostname[MAXHOSTNAMELEN];
+ size_t	utmp_len = sizeof(remote_hostname) - 1;
+ int	registerd_host_only = 0;
+@@ -115,6 +117,7 @@
+ #ifdef	LINEMODE
+ 	'l',
+ #endif
++	'M', ':',
+ 	'\0'
+ };
+ 
+@@ -263,6 +266,9 @@
+ 			alwayslinemode = 1;
+ 			break;
+ #endif	/* LINEMODE */
++		case 'M':
++			direct_shell = optarg;
++			break;
+ 
+ 		case 'k':
+ #if	defined(LINEMODE) && defined(KLUDGELINEMODE)
