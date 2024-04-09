@@ -55,6 +55,10 @@ apple-cmds: apple-cmds-setup adv-cmds file-cmds kext-tools libarchive network-cm
 		$(LN_SR) $(BUILD_STAGE)/apple-cmds/$(MEMO_PREFIX)/bin/binpack $${f%.lo}; \
 		rm $$f; \
 	done
+	for f in $$(find $(BUILD_STAGE)/apple-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec -type f -name '*.lo' -print); do \
+		$(LN_SR) $(BUILD_STAGE)/apple-cmds/$(MEMO_PREFIX)/bin/binpack $${f%.lo}; \
+		rm $$f; \
+	done
 	$(call AFTER_BUILD)
 	$(LDID) -S$(BUILD_ROOT)/binpack.xml $(BUILD_STAGE)/apple-cmds/$(MEMO_PREFIX)/bin/binpack
 endif
